@@ -4,10 +4,11 @@ import { useCallback, useState } from 'react'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import { Avatar, Flex, Heading, IconButton, Select, Tooltip } from '@radix-ui/themes'
 import cs from 'classnames'
+import Image from 'next/image'
 import NextLink from 'next/link'
-import { FaAdjust, FaGithub, FaMoon, FaRegSun } from 'react-icons/fa'
-import { Link } from '../Link'
+import { FaAdjust, FaMoon, FaRegSun } from 'react-icons/fa'
 import { useTheme } from '../Themes'
+
 
 export const Header = () => {
   const { theme, setTheme } = useTheme()
@@ -34,7 +35,7 @@ export const Header = () => {
             size="2"
             radius="full"
             fallback={
-              <img src="shiv-baba-logo.png" alt="u95" width="60" height="60"></img>
+              <Image src="shiv-baba-logo.png" alt="u95" width="60" height="60"></Image>
               
             }
           />

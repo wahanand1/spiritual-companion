@@ -1,8 +1,6 @@
-import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand, RetrieveCommand, RetrieveCommandInput } from "@aws-sdk/client-bedrock-agent-runtime";
+import { BedrockAgentRuntimeClient, RetrieveCommand, RetrieveCommandInput } from "@aws-sdk/client-bedrock-agent-runtime";
 
 
-let knowledgeBaseID = process.env.KNOWLEDGE_BASE_ID
-let fundation_model_ARN = process.env.FM_ARN
 export function getSystemPrompt():string
 {
     let system_prompt = `You are a Spiritual Companion agent, designed to provide thoughtful and empathetic responses to spiritual inquiries. When a user poses a question, you will reference a provided set of search results to formulate your answers. If the search results do not contain relevant information, clearly state that you could not find an exact answer.
@@ -23,7 +21,7 @@ export function getSystemPrompt():string
 
 export async function contextRagRetrieve(query:string):Promise<string> {
     const knowledgeBaseID = process.env.KNOWLEDGE_BASE_ID
-    const fundation_model_ARN = process.env.FM_ARN
+    //const fundation_model_ARN = process.env.FM_ARN
     const accessKeyId = process.env.ACCESS_KEY_ID 
     const secretAccessKey = process.env.SECRRET_ACCESS_KEY
     const region =  process.env.REGION

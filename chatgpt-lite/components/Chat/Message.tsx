@@ -2,12 +2,13 @@
 
 import { useCallback, useState } from 'react'
 import { Avatar, Flex, IconButton, Tooltip } from '@radix-ui/themes'
+import Image from 'next/image'
 import { FaRegCopy } from 'react-icons/fa'
 import { HiUser } from 'react-icons/hi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { Markdown } from '@/components'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { ChatMessage } from './interface'
+
 
 export interface MessageProps {
   message: ChatMessage
@@ -30,7 +31,7 @@ const Message = (props: MessageProps) => {
   return (
     <Flex gap="4" className="mb-5">
       <Avatar
-        fallback={isUser ? <HiUser className="size-4" /> : <img src="shiv-baba-logo.png" alt="u95" width="60" height="60"></img>
+        fallback={isUser ? <HiUser className="size-4" /> : <Image src="shiv-baba-logo.png" alt="u95" width="60" height="60"></Image>
         }
         color={isUser ? undefined : 'green'}
         size="2"
