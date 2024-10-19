@@ -31,7 +31,7 @@ const Message = (props: MessageProps) => {
   return (
     <Flex gap="4" className="mb-5">
       <Avatar
-        fallback={isUser ? <HiUser className="size-4" /> : <Image src="shiv-baba-logo.png" alt="u95" width="60" height="60"></Image>
+        fallback={isUser ? <HiUser className="size-4" /> : <Image src="/shiv-baba-logo.png" alt="u95" width="60" height="60"></Image>
         }
         color={isUser ? undefined : 'green'}
         size="2"

@@ -35,7 +35,7 @@ export const Header = () => {
             size="2"
             radius="full"
             fallback={
-              <Image src="shiv-baba-logo.png" alt="u95" width="60" height="60"></Image>
+              <Image src="/shiv-baba-logo.png" alt="u95" width="60" height="60"></Image>
               
             }
           />
