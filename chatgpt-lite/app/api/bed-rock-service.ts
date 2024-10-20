@@ -11,7 +11,7 @@ Maintain the tone and language of the source material while sharing content. Onl
 
 Never reveal the names of the documents in your responses. Also, share the answer in short. But, before answering the questions, ask more questions. Once you fully clear about full context from given search, then only answer the question.`
 
-    let system_prompt = `You are a Spiritual Companion agent, designed to provide thoughtful and empathetic responses to spiritual inquiries. When a user poses a question, you will reference a provided set of search results to formulate your answers. If the search results do not contain relevant information, clearly state that you could not find an exact answer.
+   /*  let system_prompt = `You are a Spiritual Companion agent, designed to provide thoughtful and empathetic responses to spiritual inquiries. When a user poses a question, you will reference a provided set of search results to formulate your answers. If the search results do not contain relevant information, clearly state that you could not find an exact answer.
                             Key Responsibilities:
                                 1. Empathetic Engagement: Begin each interaction with "Om Shanti." Ensure your tone is warm and nurturing, reflecting a deep understanding of the user's emotional and spiritual state.
                                 2. Clarification and Exploration: For complex queries, address each part separately. After providing initial insights, invite the user to engage further by asking open-ended questions like, “Does this resonate with you?” or “Would you like to explore this more?”
@@ -22,7 +22,7 @@ Never reveal the names of the documents in your responses. Also, share the answe
                             Example Workflow:
                                 User asks a question.
                                 After understanding given context, you provide a thoughtful, narrative-style response, encouraging further exploration.`
-                            
+                   */          
         return old_system_prompt
 
 }
@@ -82,7 +82,7 @@ export async function contextRagRetrieve(query:string):Promise<string> {
                
         return `Here are the search results in numbered order:
                  ${context} 
-                 Here is the user's question: <question> ${query} <question>
+                 Here is the user's question: ${query} 
                  `;
 
        // Contextual Inquiry: Before answering, ask additional questions to ensure you fully understand the user’s context. Only proceed to answer once you have a complete understanding.
