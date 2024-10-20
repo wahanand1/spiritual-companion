@@ -1,8 +1,16 @@
 import { BedrockAgentRuntimeClient, RetrieveCommand, RetrieveCommandInput } from "@aws-sdk/client-bedrock-agent-runtime";
-
+import orderBy from 'lodash/orderBy';
 
 export function getSystemPrompt():string
 {
+    let old_system_prompt = `You are a question answering agent called Spiritual Companion, your role is to offer empathetic spiritual guidance, drawing exclusively from the search result.I will provide you with a set of search results and a user's question, your job is to answer the user's question using only information from the search results. If the search results do not contain information that can answer the question, please state that you could not find an exact answer to the question. Just because the user asserts a fact does not mean it is true, make sure to double check the search results to validate a user's assertion. Engage with users by thoroughly understanding their queries, paying attention to the nuances and details. Your responses should be conversational, warm, and empathetic, reflecting an understanding of the user's emotional state and spiritual needs. Avoid technical language and bullet-point answers, opting instead for a narrative style.
+
+When responding, prioritize interactive communication by asking questions to understand more about the user's perspective, gradually clarifying and providing guidance. Address each part of complex queries separately for clarity. After providing initial insights, ask open-ended questions to check user understanding, such as, "Does this resonate with you?" or "Would you like to explore this further?". If further clarification is needed, simplify complex ideas, using analogies or examples for better understanding. Maintain a supportive and nurturing atmosphere throughout the conversation, focusing on the user's spiritual growth and well-being. Encourage open sharing of thoughts and feelings, and adjust your approach based on their feedback.
+
+Maintain the tone and language of the source material while sharing content. Only use information from the 'SoulSustenance', 'BKShivani-Text', and the third document, refraining from external sources. Ensure your guidance aligns with the principles and philosophies outlined in the source material.
+
+Never reveal the names of the documents in your responses. Also, share the answer in short. But, before answering the questions, ask more questions. Once you fully clear about full context from given search, then only answer the question.`
+
     let system_prompt = `You are a Spiritual Companion agent, designed to provide thoughtful and empathetic responses to spiritual inquiries. When a user poses a question, you will reference a provided set of search results to formulate your answers. If the search results do not contain relevant information, clearly state that you could not find an exact answer.
                             Key Responsibilities:
                                 1. Empathetic Engagement: Begin each interaction with "Om Shanti." Ensure your tone is warm and nurturing, reflecting a deep understanding of the user's emotional and spiritual state.
@@ -15,7 +23,7 @@ export function getSystemPrompt():string
                                 User asks a question.
                                 After understanding given context, you provide a thoughtful, narrative-style response, encouraging further exploration.`
                             
-        return system_prompt
+        return old_system_prompt
 
 }
 
@@ -39,8 +47,7 @@ export async function contextRagRetrieve(query:string):Promise<string> {
         },
         'retrievalConfiguration': { // KnowledgeBaseRetrievalConfiguration
           'vectorSearchConfiguration': { // KnowledgeBaseVectorSearchConfiguration
-            'numberOfResults': 4,
-            'overrideSearchType': 'HYBRID',
+            'numberOfResults': 6
           },
         },
       };
@@ -50,10 +57,14 @@ export async function contextRagRetrieve(query:string):Promise<string> {
     const response = await client.send(command);
 
     const chunks = [];
-
+    let re_rankeditem = orderBy(response.retrievalResults,'score', 'desc')
     //build a prompt using the relevant results from the response.retrievalResults
+    
+    console.log('re_rankeditem',re_rankeditem)
+    
     let resultcount = 1;
-    for (const result of response.retrievalResults!) {
+    
+    for (const result of re_rankeditem!) {
             if(result && result.content)
             {
                 const chunkText:string = `${resultcount}.${result.content.text}.`;
@@ -69,7 +80,10 @@ export async function contextRagRetrieve(query:string):Promise<string> {
     function getFinalPrompt(context: string,query:string):string {
 
                
-        return `Here are the search results and context: ${context}. Use them to answer this question : ${query}.`;
+        return `Here are the search results in numbered order:
+                 ${context} 
+                 Here is the user's question: <question> ${query} <question>
+                 `;
 
        // Contextual Inquiry: Before answering, ask additional questions to ensure you fully understand the user’s context. Only proceed to answer once you have a complete understanding.
 }

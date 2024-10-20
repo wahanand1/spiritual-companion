@@ -12,22 +12,27 @@ export interface Message {
 
 export async function POST(req: NextRequest) {
   try {
-    const { input } = (await req.json()) as {
+    const { messages,input } = (await req.json()) as {
+      messages: Message[]
       input: string
     }
     
 
     const promptKB = await contextRagRetrieve(input);
-    const messagesWith3ChatHistory = [
-      { content: promptKB, role: 'user' }, 
+    const messagesWithHistory = [
+      ...messages,
+      { content: promptKB, role: 'user' }
     ]
-    console.log("messagesWith3ChatHistory",messagesWith3ChatHistory);
+
+    /* const messagesWith3ChatHistory = [
+      { content: promptKB, role: 'user' }, 
+    ] */
+    console.log("messagesWithHistory",messagesWithHistory);
     
-    const iterator =  getBedRockAIStream("", "", promptKB, messagesWith3ChatHistory)
+    const iterator =  getBedRockAIStream(promptKB, messagesWithHistory)
     const stream = iteratorToStream(iterator)
-    //const { apiUrl, apiKey, model } = getApiConfig()
-    //const stream = await getOpenAIStream(apiUrl, apiKey, model, messagesWithHistory)
-    return new Response(stream)
+    return new Response(stream);
+    //return new Response("This is test");
   } catch (error) {
     console.error(error)
     return NextResponse.json(
@@ -56,8 +61,6 @@ function iteratorToStream(iterator:any)
 }
 
 async function*  getBedRockAIStream(
-  apiUrl: string,
-  apiKey: string,
   model: string,
   messages: Message[]
 ) {
