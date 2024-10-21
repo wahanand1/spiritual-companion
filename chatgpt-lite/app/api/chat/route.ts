@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
 
     const promptKB = await contextRagRetrieve(input);
     const messagesWithHistory = [
-      ...messages,
       { content: promptKB, role: 'user' }
     ]
 
