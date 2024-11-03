@@ -1,7 +1,6 @@
 import { BedrockAgentRuntimeClient, RetrieveCommand, RetrieveCommandInput } from "@aws-sdk/client-bedrock-agent-runtime";
-import orderBy from 'lodash/orderBy';
-import { hasOnlyHindiCharacters } from "./utils"
 import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
+import orderBy from 'lodash/orderBy';
 
 
 const system_prompt = `
