@@ -32,14 +32,13 @@ export async function murliRagRetrieve(query:string):Promise<string|undefined> {
     
     let re_rankeditem = orderBy(response.retrievalResults,'score', 'desc')
     //build a prompt using the relevant results from the response.retrievalResults
-    console.log('vector DB response',response)
-    console.log('vector DB result',re_rankeditem)
+    
     let resultcount = 1;
     const chunks = [];
     for (const result of re_rankeditem!) {
             if(result && result.content)
             {
-                const chunkText:string = `\nMurli snippet ${resultcount}.${result.content.text}\n. <a href="${result.location!.s3Location!.uri!.replace("s3://av-baba-murli", "https://av-baba-murli.s3.us-east-1.amazonaws.com")}" target="_blank" style="text-decoration:none;color:red">click here</a> for detail murli\n `;
+                const chunkText:string = `\nMurli references ${resultcount}.${result.content.text}\n. <a href="${result.location!.s3Location!.uri!.replace("s3://av-baba-murli", "https://av-baba-murli.s3.us-east-1.amazonaws.com")}" target="_blank" style="text-decoration:none;color:red">click here</a> for detail murli\n `;
                 resultcount += 1;
                 chunks.push(chunkText);
             }
@@ -73,7 +72,8 @@ function buildCommand(query:string):RetrieveCommand
     },
     'retrievalConfiguration': { // KnowledgeBaseRetrievalConfiguration
       'vectorSearchConfiguration': { // KnowledgeBaseVectorSearchConfiguration
-        'numberOfResults': 2
+        'numberOfResults': 5,
+        'overrideSearchType':"HYBRID"
       },
     },
   };
