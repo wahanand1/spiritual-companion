@@ -1,6 +1,8 @@
 import { BedrockAgentRuntimeClient, RetrieveCommand, RetrieveCommandInput } from "@aws-sdk/client-bedrock-agent-runtime";
 import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 import orderBy from 'lodash/orderBy';
+import { hasOnlyHindiCharacters } from './utils'
+import translate from "google-translate-api-x";
 
 
 const system_prompt = `
@@ -20,7 +22,24 @@ Output: "क्या यह संभव है?"
 `
 export async function murliRagRetrieve(query:string):Promise<string|undefined> {
   
+    query = query.replace('?','').replace('.','')
+    let isHindi = hasOnlyHindiCharacters(query)
     console.log("query :", query)
+    console.log("isHindi",isHindi)
+    if(!isHindi)
+    {
+      const response = await translate(query, {
+        from: "en",
+        to: "hi"
+      });
+      //const correctedText = response.from.text.value.replace(/\[([a-z]+)\]/gi, "$1"); 
+      //const finalRes = await translate(correctedText, { from: "en", to: "hi" });
+      query = response.text
+      console.log("final text",response.text); 
+      console.log(response.from.language.iso);
+      
+
+    }
     
     const client = getBedRockClient();
     //const bedrock= new BedrockRuntime({ region: "us-east-1" })
